@@ -9,6 +9,7 @@ import com.redemption.adey.Adapter.CustomAdapter
 import com.redemption.adey.Interface.YoutubeService
 import com.redemption.adey.Model.ItemsViewModel
 import com.squareup.moshi.Moshi
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
