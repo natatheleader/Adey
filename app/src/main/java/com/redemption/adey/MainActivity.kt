@@ -59,10 +59,10 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 val body = response.body()!!
-                val item = body.items
+                val items = body.items
 
-                for (i in 0 until item.size) {
-                    data.add(ItemsViewModel(R.drawable.ic_baseline_folder_24, item[i].snippet.title))
+                for (item in items) {
+                    data.add(ItemsViewModel(item.snippet.thumbnails.high.url, item.snippet.title))
                 }
 
                 // This will pass the ArrayList to our Adapter

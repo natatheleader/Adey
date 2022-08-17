@@ -8,6 +8,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.redemption.adey.Model.ItemsViewModel
 import com.redemption.adey.R
+import com.squareup.picasso.Picasso
 
 class CustomAdapter(private val mList: List<ItemsViewModel>) : RecyclerView.Adapter<CustomAdapter.ViewHolder>() {
     // create new views
@@ -26,7 +27,8 @@ class CustomAdapter(private val mList: List<ItemsViewModel>) : RecyclerView.Adap
         val ItemsViewModel = mList[position]
 
         // sets the image to the imageview from our itemHolder class
-        holder.thumb.setImageResource(ItemsViewModel.image)
+        // holder.thumb.setImageResource(ItemsViewModel.image)
+        Picasso.get().load(ItemsViewModel.image).into(holder.thumb);
 
         // sets the text to the textview from our itemHolder class
         holder.title.text = ItemsViewModel.title
