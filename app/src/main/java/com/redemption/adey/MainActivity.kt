@@ -40,14 +40,14 @@ class MainActivity : AppCompatActivity() {
 //            data.add(ItemsViewModel(R.drawable.ic_baseline_folder_24, "Item " + i, "Item Duration" + i))
 //        }
 
-        //test network call
-        val moshi = Moshi.Builder().addLast(KotlinJsonAdapterFactory()).build()
-        val retrofit = Retrofit.Builder()
-            .baseUrl("https://www.googleapis.com/")
-            .addConverterFactory(MoshiConverterFactory.create(moshi))
-            .build()
-
-        val youtubeService: YoutubeService = retrofit.create(YoutubeService::class.java)
+//        //test network call
+//        val moshi = Moshi.Builder().addLast(KotlinJsonAdapterFactory()).build()
+//        val retrofit = Retrofit.Builder()
+//            .baseUrl("https://www.googleapis.com/")
+//            .addConverterFactory(MoshiConverterFactory.create(moshi))
+//            .build()
+//
+//        val youtubeService: YoutubeService = retrofit.create(YoutubeService::class.java)
 
         youtubeService.getPlayList().enqueue(object : Callback<ItemViewModel> {
             override fun onResponse(call: Call<ItemViewModel>, response: Response<ItemViewModel>) {
