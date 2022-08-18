@@ -1,18 +1,18 @@
 package com.redemption.adey
 
+import com.google.gson.GsonBuilder
 import com.redemption.adey.Interface.YoutubeService
-import com.squareup.moshi.Moshi
-import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import retrofit2.Retrofit
-import retrofit2.converter.moshi.MoshiConverterFactory
+import retrofit2.converter.gson.GsonConverterFactory
 
 object NetworkLayer {
 
     //test network call
-    val moshi = Moshi.Builder().addLast(KotlinJsonAdapterFactory()).build()
+    val gson = GsonBuilder()
+        .create()
     val retrofit = Retrofit.Builder()
         .baseUrl("https://www.googleapis.com/")
-        .addConverterFactory(MoshiConverterFactory.create(moshi))
+        .addConverterFactory(GsonConverterFactory.create(gson))
         .build()
 
     val youtubeService: YoutubeService by lazy {

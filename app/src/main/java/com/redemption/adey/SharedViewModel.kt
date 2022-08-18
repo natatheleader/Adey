@@ -1,4 +1,24 @@
 package com.redemption.adey
 
-class SharedViewModel {
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.redemption.adey.Model.ItemViewModel
+import kotlinx.coroutines.launch
+
+class SharedViewModel: ViewModel() {
+
+    private val repository = SharedRepository()
+
+    private val _playlistLiveData = MutableLiveData<ItemViewModel?>()
+    val playlistLiveData: LiveData<ItemViewModel?> = _playlistLiveData
+
+    fun refreshPlaylist() {
+        viewModelScope.launch {
+            val response = repository.getPlaylist()
+
+            _playlistLiveData.postValue(response)
+        }
+    }
 }
