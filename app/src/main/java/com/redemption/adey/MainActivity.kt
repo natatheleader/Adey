@@ -15,6 +15,7 @@ class MainActivity : AppCompatActivity() {
 
     private var currentPage = 1
     private var totalAvailablePages = 1
+    private var pageToken: String? = ""
 
     private val viewModel: SharedViewModel by lazy {
         ViewModelProvider(this).get(SharedViewModel::class.java)
@@ -46,7 +47,8 @@ class MainActivity : AppCompatActivity() {
                 data.add(ItemsViewModel(item.snippet.thumbnails.high.url, item.snippet.title))
             }
 
-            totalAvailablePages = items.pageInfo.totalResults
+            totalAvailablePages = response.pageInfo.totalResults
+            pageToken = response.nextPageToken
 
             val adapter = CustomAdapter(data)
 
@@ -60,7 +62,7 @@ class MainActivity : AppCompatActivity() {
                 if (!recyclerview.canScrollVertically(1)) {
                     if (currentPage <= totalAvailablePages) {
                         currentPage += 1
-                        viewModel.refreshPlaylist("")
+                        viewModel.refreshPlaylist(pageToken!!)
                     }
                 }
             }
