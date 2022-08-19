@@ -14,9 +14,9 @@ class SharedViewModel: ViewModel() {
     private val _playlistLiveData = MutableLiveData<ItemViewModel?>()
     val playlistLiveData: LiveData<ItemViewModel?> = _playlistLiveData
 
-    fun refreshPlaylist() {
+    fun refreshPlaylist(pageToken: String) {
         viewModelScope.launch {
-            val response = repository.getPlaylist()
+            val response = repository.getPlaylist(pageToken)
 
             _playlistLiveData.postValue(response)
         }

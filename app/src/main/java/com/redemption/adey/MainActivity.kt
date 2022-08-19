@@ -13,6 +13,9 @@ import com.redemption.adey.Model.ItemsViewModel
 
 class MainActivity : AppCompatActivity() {
 
+    private var currentPage = 1
+    private var totalAvailablePages = 1
+
     private val viewModel: SharedViewModel by lazy {
         ViewModelProvider(this).get(SharedViewModel::class.java)
     }
@@ -30,7 +33,7 @@ class MainActivity : AppCompatActivity() {
         // ArrayList of class ItemsViewModel
         val data = ArrayList<ItemsViewModel>()
 
-        viewModel.refreshPlaylist()
+        viewModel.refreshPlaylist("")
         viewModel.playlistLiveData.observe(this) { response ->
             if (response == null) {
                 Toast.makeText(this@MainActivity, "Unsuccessfull network call", Toast.LENGTH_LONG).show()
@@ -42,12 +45,25 @@ class MainActivity : AppCompatActivity() {
             for (item in items) {
                 data.add(ItemsViewModel(item.snippet.thumbnails.high.url, item.snippet.title))
             }
+
+            totalAvailablePages = items.pageInfo.totalResults
+
+            val adapter = CustomAdapter(data)
+
+            // Setting the Adapter with the recyclerview
+            recyclerview.adapter = adapter
         }
 
-        Log.d("ApiSuccess", "Model Error:  ${data}")
-        val adapter = CustomAdapter(data)
-
-        // Setting the Adapter with the recyclerview
-        recyclerview.adapter = adapter
+        recyclerview.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                if (!recyclerview.canScrollVertically(1)) {
+                    if (currentPage <= totalAvailablePages) {
+                        currentPage += 1
+                        viewModel.refreshPlaylist("")
+                    }
+                }
+            }
+        })
     }
 }

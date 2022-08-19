@@ -1,6 +1,5 @@
-package com.redemption.adey
+package com.redemption.adey.Network
 
-import android.util.Log
 import com.redemption.adey.Interface.YoutubeService
 import com.redemption.adey.Model.ItemViewModel
 import retrofit2.Response
@@ -8,14 +7,13 @@ import retrofit2.Response
 
 class ApiClient (private val youtubeService: YoutubeService){
 
-    suspend fun getPlaylist(): SimpleResponse<ItemViewModel> {
-        return safeApiCall{youtubeService.getPlayList()}
+    suspend fun getPlaylist(pageToken: String): SimpleResponse<ItemViewModel> {
+        return safeApiCall{youtubeService.getPlayList(pageToken)}
     }
-    private inline fun <T> safeApiCall(apiCall:()->Response<T>):SimpleResponse<T>{
+    private inline fun <T> safeApiCall(apiCall:()->Response<T>): SimpleResponse<T> {
         return try {
             SimpleResponse.success(apiCall.invoke())
         }catch (e:Exception){
-            Log.d("ApiError", "Error: $e")
             SimpleResponse.failure(e)
         }
     }

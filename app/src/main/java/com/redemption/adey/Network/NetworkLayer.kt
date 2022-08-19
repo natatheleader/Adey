@@ -1,4 +1,4 @@
-package com.redemption.adey
+package com.redemption.adey.Network
 
 import com.google.gson.GsonBuilder
 import com.redemption.adey.Interface.YoutubeService

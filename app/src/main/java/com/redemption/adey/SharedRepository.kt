@@ -1,21 +1,17 @@
 package com.redemption.adey
 
-import android.util.Log
 import com.redemption.adey.Model.ItemViewModel
+import com.redemption.adey.Network.NetworkLayer
 
 class SharedRepository {
-    suspend fun getPlaylist(): ItemViewModel? {
-        val request = NetworkLayer.apiClient.getPlaylist()
+    suspend fun getPlaylist(pageToken : String): ItemViewModel? {
+        val request = NetworkLayer.apiClient.getPlaylist(pageToken)
         if(request.failed){
-            Log.d("ApiError","Error::: "+ request.exception)
             return  null
         }
         if(!request.isSuccessful){
-            Log.d("ApiError","Error::: "+ request.data)
             return  null
         }
-//        Log.d("ApiSucess","Model Error:  "+request.body)
-            return request.body
-
+        return request.body
     }
 }

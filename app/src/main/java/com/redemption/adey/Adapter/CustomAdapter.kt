@@ -10,7 +10,7 @@ import com.redemption.adey.Model.ItemsViewModel
 import com.redemption.adey.R
 import com.squareup.picasso.Picasso
 
-class CustomAdapter(private val mList: List<ItemsViewModel>) : RecyclerView.Adapter<CustomAdapter.ViewHolder>() {
+class CustomAdapter(private var mList: List<ItemsViewModel>) : RecyclerView.Adapter<CustomAdapter.ViewHolder>() {
     // create new views
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         // inflates the card_view_design view
@@ -48,5 +48,11 @@ class CustomAdapter(private val mList: List<ItemsViewModel>) : RecyclerView.Adap
         val thumb: ImageView = itemView.findViewById(R.id.thumb)
         val title: TextView = itemView.findViewById(R.id.title)
 //        val duration: TextView = itemView.findViewById(R.id.duration)
+    }
+
+    fun updateList(playlist: ArrayList<ItemsViewModel>, oldCount: Int, video: Int) {
+        this.mList = playlist
+        notifyDataSetChanged()
+        notifyItemRangeInserted(oldCount, video)
     }
 }
