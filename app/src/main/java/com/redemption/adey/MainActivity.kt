@@ -13,8 +13,8 @@ import com.redemption.adey.Model.ItemsViewModel
 
 class MainActivity : AppCompatActivity() {
 
-    private var currentPage = 1
-    private var totalAvailablePages = 1
+    private var currentPage = 0
+    private var totalAvailablePerPage = 0
     private var pageToken: String? = ""
 
     private val viewModel: SharedViewModel by lazy {
@@ -47,7 +47,7 @@ class MainActivity : AppCompatActivity() {
                 data.add(ItemsViewModel(item.snippet.thumbnails.high.url, item.snippet.title))
             }
 
-            totalAvailablePages = response.pageInfo.totalResults
+            totalAvailablePerPage = response.pageInfo.totalResults
             pageToken = response.nextPageToken
 
             val adapter = CustomAdapter(data)
@@ -60,8 +60,8 @@ class MainActivity : AppCompatActivity() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
                 if (!recyclerview.canScrollVertically(1)) {
-                    if (currentPage <= totalAvailablePages) {
-                        currentPage += 1
+                    if (currentPage <= totalAvailablePerPage) {
+                        currentPage += 10
                         viewModel.refreshPlaylist(pageToken!!)
                     }
                 }
