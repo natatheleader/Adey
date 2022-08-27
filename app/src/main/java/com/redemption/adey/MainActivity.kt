@@ -16,7 +16,7 @@ class MainActivity : AppCompatActivity() {
     private var currentPage = 0
     private var totalAvailablePerPage = 0
     private var pageToken: String? = ""
-
+    private var adapter: CustomAdapter? = null;
     private val viewModel: SharedViewModel by lazy {
         ViewModelProvider(this).get(SharedViewModel::class.java)
     }
@@ -43,25 +43,40 @@ class MainActivity : AppCompatActivity() {
 
             val items = response.items
 
-            for (item in items) {
-                data.add(ItemsViewModel(item.snippet.thumbnails.high.url, item.snippet.title))
+            if(currentPage== 0){
+                for (item in items) {
+                    data.add(ItemsViewModel(item.snippet.thumbnails.high.url, item.snippet.title))
+                }
+
+                totalAvailablePerPage = response.pageInfo.totalResults
+                pageToken = response.nextPageToken
+
+                adapter = CustomAdapter(data)
+
+                // Setting the Adapter with the recyclerview
+                recyclerview.adapter = adapter
+            }else{
+                val newData = ArrayList<ItemsViewModel>()
+
+                for (item in items) {
+                    newData.add(ItemsViewModel(item.snippet.thumbnails.high.url, item.snippet.title))
+                }
+
+                totalAvailablePerPage = response.pageInfo.totalResults
+                pageToken = response.nextPageToken
+                adapter!!.updateList(newData, adapter!!.itemCount)
+
+
+
             }
-
-            totalAvailablePerPage = response.pageInfo.totalResults
-            pageToken = response.nextPageToken
-
-            val adapter = CustomAdapter(data)
-
-            // Setting the Adapter with the recyclerview
-            recyclerview.adapter = adapter
         }
 
         recyclerview.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
                 if (!recyclerview.canScrollVertically(1)) {
-                    if (currentPage <= totalAvailablePerPage) {
-                        currentPage += 10
+                    currentPage += 1
+                    if (currentPage <= totalAvailablePerPage / 10) {
                         viewModel.refreshPlaylist(pageToken!!)
                     }
                 }
