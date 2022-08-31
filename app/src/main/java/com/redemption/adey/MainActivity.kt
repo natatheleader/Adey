@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.redemption.adey.Adapter.CustomAdapter
 import com.redemption.adey.Model.ItemsViewModel
+import com.redemption.adey.Model.ViewItemModel
 
 
 class MainActivity : AppCompatActivity() {
@@ -16,6 +17,7 @@ class MainActivity : AppCompatActivity() {
     private var currentPage = 0
     private var totalAvailablePerPage = 0
     private var pageToken: String? = ""
+    var offSet = 0
     private var adapter: CustomAdapter? = null;
     private val viewModel: SharedViewModel by lazy {
         ViewModelProvider(this).get(SharedViewModel::class.java)
@@ -32,7 +34,7 @@ class MainActivity : AppCompatActivity() {
         recyclerview.layoutManager = LinearLayoutManager(this)
 
         // ArrayList of class ItemsViewModel
-        val data = ArrayList<ItemsViewModel>()
+        val data = ArrayList<ViewItemModel>()
 
         viewModel.refreshPlaylist("")
         viewModel.playlistLiveData.observe(this) { response ->
@@ -45,25 +47,50 @@ class MainActivity : AppCompatActivity() {
 
             if(currentPage== 0){
                 for (item in items) {
-                    data.add(ItemsViewModel(item.snippet.thumbnails.high.url, item.snippet.title))
+//                    data.add(ItemsViewModel(item.snippet.thumbnails.high.url, item.snippet.title))
                 }
 
+
+                for(item in items){
+
+                    if(offSet!= 0 && offSet % 5 == 0) {
+                        data.add(ViewItemModel(null,true))
+
+                    }
+                    offSet = offSet + 1
+                    data.add(ViewItemModel(ItemsViewModel(item.snippet.thumbnails.high.url, item.snippet.title),false))
+
+                }
                 totalAvailablePerPage = response.pageInfo.totalResults
                 pageToken = response.nextPageToken
 
-                adapter = CustomAdapter(data)
+                adapter = CustomAdapter(data, CustomAdapter.OnClickListener{
+                        position->"tobe written${data[position]}"
+
+                })
 
                 // Setting the Adapter with the recyclerview
                 recyclerview.adapter = adapter
             }else{
-                val newData = ArrayList<ItemsViewModel>()
+                val newData = ArrayList<ViewItemModel>()
 
-                for (item in items) {
-                    newData.add(ItemsViewModel(item.snippet.thumbnails.high.url, item.snippet.title))
+//                for (item in items) {
+//                    newData.add(ItemsViewModel(item.snippet.thumbnails.high.url, item.snippet.title))
+//                }
+                for(item in items){
+
+                    if(offSet!= 0 && offSet % 5 == 0) {
+                        newData.add(ViewItemModel(null,true))
+
+                    }
+                    offSet = offSet + 1
+                    newData.add(ViewItemModel(ItemsViewModel(item.snippet.thumbnails.high.url, item.snippet.title),false))
+
                 }
-
                 totalAvailablePerPage = response.pageInfo.totalResults
                 pageToken = response.nextPageToken
+//                recyclerview.dispatchLayout()
+                recyclerview.getRecycledViewPool().clear();
                 adapter!!.updateList(newData, adapter!!.itemCount)
 
 

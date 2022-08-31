@@ -4,4 +4,6 @@
     <string name="duration">45:24</string>
     <string name="videoDescription">This is the description for the video</string>
     <string name="API_KEY">AIzaSyDE2wMvuGg7-18C5vnDoEJEPtLgaNLuwhU</string>
+    <string name="nativeAdUnit">ca-app-pub-3940256099942544/2247696110</string>
+
 </resources>

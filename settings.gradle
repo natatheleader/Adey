@@ -8,3 +8,4 @@ dependencyResolutionManagement {
 }
 rootProject.name = "Adey"
 include ':app'
+include ':nativetemplates'
