@@ -12,6 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Adey">
         <activity
+            android:name=".Player"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
@@ -20,10 +23,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-6018993100135230~4232565229"/>
-
+            android:value="ca-app-pub-6018993100135230~4232565229" />
     </application>
 
 </manifest>

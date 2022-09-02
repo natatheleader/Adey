@@ -1,5 +1,6 @@
 package com.redemption.adey
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
@@ -58,14 +59,17 @@ class MainActivity : AppCompatActivity() {
 
                     }
                     offSet = offSet + 1
-                    data.add(ViewItemModel(ItemsViewModel(item.snippet.thumbnails.high.url, item.snippet.title),false))
+                    data.add(ViewItemModel(ItemsViewModel(item.snippet.thumbnails.high.url, item.snippet.title, item.snippet.resourceId.videoId),false))
 
                 }
                 totalAvailablePerPage = response.pageInfo.totalResults
                 pageToken = response.nextPageToken
 
                 adapter = CustomAdapter(data, CustomAdapter.OnClickListener{
-                        position->"tobe written${data[position]}"
+                        position->
+//                    val intent = Intent(this@MainActivity, SecondActivity::class.java)
+//                                    intent.putExtra("key", "Kotlin")
+//                                    startActivity(intent)
 
                 })
 
@@ -84,7 +88,7 @@ class MainActivity : AppCompatActivity() {
 
                     }
                     offSet = offSet + 1
-                    newData.add(ViewItemModel(ItemsViewModel(item.snippet.thumbnails.high.url, item.snippet.title),false))
+                    newData.add(ViewItemModel(ItemsViewModel(item.snippet.thumbnails.high.url, item.snippet.title, item.snippet.resourceId.videoId),false))
 
                 }
                 totalAvailablePerPage = response.pageInfo.totalResults
