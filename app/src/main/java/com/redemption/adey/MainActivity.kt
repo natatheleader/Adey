@@ -66,11 +66,9 @@ class MainActivity : AppCompatActivity() {
                 pageToken = response.nextPageToken
 
                 adapter = CustomAdapter(data, CustomAdapter.OnClickListener{
-                        position->
-//                    val intent = Intent(this@MainActivity, SecondActivity::class.java)
-//                                    intent.putExtra("key", "Kotlin")
-//                                    startActivity(intent)
-
+                        position->val intent = Intent(this@MainActivity, Player::class.java)
+                                    intent.putExtra("videoId", data[position].data?.link)
+                                    startActivity(intent)
                 })
 
                 // Setting the Adapter with the recyclerview
