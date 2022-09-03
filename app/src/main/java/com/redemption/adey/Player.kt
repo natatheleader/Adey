@@ -12,9 +12,7 @@ class Player : AppCompatActivity() {
 
         val link: TextView = findViewById(R.id.link)
 
-        val bundle: Bundle? = intent.extras
-        val videoId: String? = intent.getString("videoId")
-//        val myArray: ArrayList<String>? = intent.getStringArrayList("myArray")
+        val videoId=intent.getStringExtra("videoId")
 
         link.setText(videoId)
     }
