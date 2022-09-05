@@ -15,7 +15,6 @@ import com.google.android.gms.ads.AdLoader
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.MobileAds
 import com.google.android.gms.ads.nativead.NativeAd
-import com.redemption.adey.Model.ItemViewModel
 import com.redemption.adey.Model.ItemsViewModel
 import com.redemption.adey.Model.ViewItemModel
 import com.redemption.adey.R
@@ -26,13 +25,8 @@ class CustomAdapter(private var mList: MutableList<ViewItemModel>, private val o
         parent: ViewGroup,
         viewType: Int
     ): CustomAdapter.DataAdapterViewHolder {
-//        val view = LayoutInflater.from(parent.context)
-//            .inflate(R.layout.bet_item, parent, false)
-//
-//        return TipHolder(view)
-
         val layout = when (viewType) {
-            TYPE_Tip -> R.layout.card_view_design
+            TYPE_DATA -> R.layout.card_view_design
             TYPE_Ad -> R.layout.native_ad_item
             else -> throw IllegalArgumentException("Invalid view type")
         }
@@ -46,7 +40,7 @@ class CustomAdapter(private var mList: MutableList<ViewItemModel>, private val o
 
     companion object {
         private const val TYPE_Ad = 1
-        private const val TYPE_Tip =0
+        private const val TYPE_DATA =0
     }
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: CustomAdapter.DataAdapterViewHolder, position: Int) {
@@ -64,7 +58,7 @@ class CustomAdapter(private var mList: MutableList<ViewItemModel>, private val o
         if(mList[position].isAd){
             return TYPE_Ad
         }else{
-            return TYPE_Tip
+            return TYPE_DATA
         }
     }
 
@@ -76,7 +70,7 @@ class CustomAdapter(private var mList: MutableList<ViewItemModel>, private val o
     }
     fun updateList(playlist: ArrayList<ViewItemModel>, oldCount: Int) {
         this.mList.addAll(oldCount,playlist)
-        notifyItemInserted(oldCount - 1);
+        notifyItemInserted(oldCount );
         notifyItemRangeInserted(oldCount, playlist.size)
     }
 

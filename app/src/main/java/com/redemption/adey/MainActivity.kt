@@ -59,7 +59,7 @@ class MainActivity : AppCompatActivity() {
 
                     }
                     offSet = offSet + 1
-                    data.add(ViewItemModel(ItemsViewModel(item.snippet.thumbnails.high.url, item.snippet.title, item.snippet.resourceId.videoId),false))
+                    data.add(ViewItemModel(ItemsViewModel(item.snippet.thumbnails.high.url, item.snippet.title, item.snippet.description, item.snippet.resourceId.videoId),false))
 
                 }
                 totalAvailablePerPage = response.pageInfo.totalResults
@@ -68,6 +68,8 @@ class MainActivity : AppCompatActivity() {
                 adapter = CustomAdapter(data, CustomAdapter.OnClickListener{
                         position->val intent = Intent(this@MainActivity, Player::class.java)
                                     intent.putExtra("videoId", data[position].data?.link)
+                                    intent.putExtra("description", data[position].data?.description)
+                                    intent.putExtra("title", data[position].data?.title)
                                     startActivity(intent)
                 })
 
@@ -86,7 +88,7 @@ class MainActivity : AppCompatActivity() {
 
                     }
                     offSet = offSet + 1
-                    newData.add(ViewItemModel(ItemsViewModel(item.snippet.thumbnails.high.url, item.snippet.title, item.snippet.resourceId.videoId),false))
+                    newData.add(ViewItemModel(ItemsViewModel(item.snippet.thumbnails.high.url, item.snippet.title, item.snippet.description, item.snippet.resourceId.videoId),false))
 
                 }
                 totalAvailablePerPage = response.pageInfo.totalResults
