@@ -2,7 +2,6 @@ package com.redemption.adey
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
@@ -18,10 +17,10 @@ class MainActivity : AppCompatActivity() {
     private var currentPage = 0
     private var totalAvailablePerPage = 0
     private var pageToken: String? = ""
-    var offSet = 0
-    private var adapter: CustomAdapter? = null;
+    private var offSet = 0
+    private var adapter: CustomAdapter? = null
     private val viewModel: SharedViewModel by lazy {
-        ViewModelProvider(this).get(SharedViewModel::class.java)
+        ViewModelProvider(this)[SharedViewModel::class.java]
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,9 +46,9 @@ class MainActivity : AppCompatActivity() {
             val items = response.items
 
             if(currentPage== 0){
-                for (item in items) {
+//                for (item in items) {
 //                    data.add(ItemsViewModel(item.snippet.thumbnails.high.url, item.snippet.title))
-                }
+//                }
 
 
                 for(item in items){
@@ -58,7 +57,7 @@ class MainActivity : AppCompatActivity() {
                         data.add(ViewItemModel(null,true))
 
                     }
-                    offSet = offSet + 1
+                    offSet += 1
                     data.add(ViewItemModel(ItemsViewModel(item.snippet.thumbnails.high.url, item.snippet.title, item.snippet.description, item.snippet.resourceId.videoId),false))
 
                 }
@@ -87,14 +86,14 @@ class MainActivity : AppCompatActivity() {
                         newData.add(ViewItemModel(null,true))
 
                     }
-                    offSet = offSet + 1
+                    offSet += 1
                     newData.add(ViewItemModel(ItemsViewModel(item.snippet.thumbnails.high.url, item.snippet.title, item.snippet.description, item.snippet.resourceId.videoId),false))
 
                 }
                 totalAvailablePerPage = response.pageInfo.totalResults
                 pageToken = response.nextPageToken
 //                recyclerview.dispatchLayout()
-                recyclerview.getRecycledViewPool().clear();
+                recyclerview.recycledViewPool.clear()
                 adapter!!.updateList(newData, adapter!!.itemCount)
 
 

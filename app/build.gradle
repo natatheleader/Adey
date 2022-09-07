@@ -53,9 +53,5 @@ dependencies {
 
     implementation project(':nativetemplates')
 
-    implementation 'androidx.multidex:multidex:2.0.1'
-    implementation 'com.github.HaarigerHarald:android-youtubeExtractor:v2.1.0'
-    implementation 'com.google.android.exoplayer:exoplayer:2.18.1'
-
     implementation 'com.github.coderwassananmol:android-youtube-player:9.0.2'
 }

@@ -3,145 +3,105 @@ package com.redemption.adey
 import android.content.pm.ActivityInfo
 import android.content.res.Configuration
 import android.os.Bundle
-import androidx.annotation.NonNull
+import android.view.View
+import android.view.Window
+import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
-import com.pierfrancescosoffritti.androidyoutubeplayer.player.YouTubePlayer
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.AdView
+import com.google.android.gms.ads.MobileAds
 import com.pierfrancescosoffritti.androidyoutubeplayer.player.YouTubePlayerView
 import com.pierfrancescosoffritti.androidyoutubeplayer.player.listeners.AbstractYouTubePlayerListener
 import com.pierfrancescosoffritti.androidyoutubeplayer.player.listeners.YouTubePlayerFullScreenListener
-import com.pierfrancescosoffritti.androidyoutubeplayer.player.listeners.YouTubePlayerInitListener
 import kotlinx.android.synthetic.main.activity_player.*
+
 
 class Player : AppCompatActivity() {
 
-//    private var player: SimpleExoPlayer? = null
-//    private var playWhenReady = true
-//    private var currentWindow = 0
-//    private var playbackPosition : Long = 0
-//    private lateinit var videoPlayer: com.google.android.exoplayer2.ui.PlayerView
-//    private lateinit var videoid: String
     private lateinit var youtubePlayerView: YouTubePlayerView
+    lateinit var mAdView : AdView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_player)
 
-//        initPlayer()
-
         val videoId: String = intent.getStringExtra("videoId").toString()
         val title: String = intent.getStringExtra("title").toString()
         val description: String = intent.getStringExtra("description").toString()
 
-        youtubePlayerView = findViewById(com.redemption.adey.R.id.youtube_player_view)
+        mAdView = findViewById(R.id.adView)
+
+        youtubePlayerView = findViewById(R.id.youtube_player_view)
         lifecycle.addObserver(youtubePlayerView)
 
-        youtubePlayerView.initialize(object : YouTubePlayerInitListener {
-            override fun onInitSuccess(@NonNull initializedYouTubePlayer: YouTubePlayer) {
-                initializedYouTubePlayer.addListener(object : AbstractYouTubePlayerListener() {
-                    override fun onReady() {
-                        initializedYouTubePlayer.loadVideo(videoId, 0F)
-                    }
-                })
-            }
+        youtubePlayerView.initialize({ initializedYouTubePlayer ->
+            initializedYouTubePlayer.addListener(object : AbstractYouTubePlayerListener() {
+                override fun onReady() {
+                    initializedYouTubePlayer.loadVideo(videoId, 0F)
+                }
+            })
         }, true)
 
-        youtubePlayerView.addFullScreenListener()
+        videoTitle.text = title
+        videoDescription.text = description
 
-        videoTitle.setText(title)
-        videoDescription.setText(description)
+        youtubePlayerView.addFullScreenListener(object : YouTubePlayerFullScreenListener {
+            override fun onYouTubePlayerEnterFullScreen() {
+                requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+                youtubePlayerView.enterFullScreen()
+            }
+
+            override fun onYouTubePlayerExitFullScreen() {
+                requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+                youtubePlayerView.exitFullScreen()
+            }
+        })
+
+        MobileAds.initialize(this) {}
+
+        val adRequest = AdRequest.Builder().build()
+        mAdView.loadAd(adRequest)
+
     }
 
     override fun onConfigurationChanged(_newConfig: Configuration) {
         super.onConfigurationChanged(_newConfig)
         if (_newConfig.orientation === Configuration.ORIENTATION_LANDSCAPE) {
-            youtubePlayerView.enterFullScreen();
+            youtubePlayerView.enterFullScreen()
+            mAdView.visibility = View.GONE
+
+            val windowInsetsController =
+                ViewCompat.getWindowInsetsController(window.decorView) ?: return
+            // Configure the behavior of the hidden system bars
+            windowInsetsController.systemBarsBehavior =
+                WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+            // Hide both the status bar and the navigation bar
+            windowInsetsController.hide(WindowInsetsCompat.Type.systemBars())
+
+            supportActionBar?.hide()
         } else {
-            youtubePlayerView.exitFullScreen();
+            youtubePlayerView.exitFullScreen()
+            mAdView.visibility = View.VISIBLE
+
+            val windowInsetsController =
+                ViewCompat.getWindowInsetsController(window.decorView) ?: return
+            // Configure the behavior of the hidden system bars
+            windowInsetsController.systemBarsBehavior =
+                WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+            // Hide both the status bar and the navigation bar
+            windowInsetsController.show(WindowInsetsCompat.Type.systemBars())
+
+            supportActionBar?.show()
         }
     }
 
-//    private fun initPlayer() {
-//        player = SimpleExoPlayer.Builder(this).build()
-//        videoPlayer.player = player
-//
-//        val videoId = intent.getStringExtra("videoId")
-//
-//        val videoUrl = "https://www.youtube.com/watch?v=${videoId}"
-//        object : YouTubeExtractor(this){
-//            override fun onExtractionComplete(
-//                ytFiles: SparseArray<YtFile>?,
-//                videoMeta: VideoMeta?
-//            ) {
-//                if(ytFiles != null) {
-//                    val itag = 137
-//                    val audioTag = 140
-//                    val videoUrl = ytFiles[itag].url
-//                    val audioUrl = ytFiles[audioTag].url
-//
-//                    val audioSource : MediaSource = ProgressiveMediaSource
-//                        .Factory(DefaultHttpDataSource.Factory())
-//                        .createMediaSource(MediaItem.fromUri(audioUrl))
-//
-//                    val videoSource : MediaSource = ProgressiveMediaSource
-//                        .Factory(DefaultHttpDataSource.Factory())
-//                        .createMediaSource(MediaItem.fromUri(videoUrl))
-//
-//                    player!!.setMediaSource(MergingMediaSource(
-//                        true, videoSource, audioSource), true)
-//                    player!!.prepare()
-//                    player!!.playWhenReady = playWhenReady
-//                    player!!.seekTo(currentWindow, playbackPosition)
-//                }
-//            }
-//        }.extract(videoUrl, false, true)
-//    }
-//
-//    override fun onStart() {
-//        super.onStart()
-//        if (Util.SDK_INT >= 24)
-//            initPlayer()
-//    }
-//
-//    override fun onResume() {
-//        super.onResume()
-//        if (Util.SDK_INT < 24 || player == null) {
-//            initPlayer()
-//            hideSystemUi()
-//        }
-//    }
-//
-//    private fun hideSystemUi() {
-//        videoPlayer.systemUiVisibility = (
-//                View.SYSTEM_UI_FLAG_LOW_PROFILE or
-//        View.SYSTEM_UI_FLAG_FULLSCREEN or
-//        View.SYSTEM_UI_FLAG_LAYOUT_STABLE or
-//                        View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY or
-//                        View.SYSTEM_UI_FLAG_HIDE_NAVIGATION or
-//                        View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-//                )
-//    }
-//
-//    override fun onPause() {
-//        if (Util.SDK_INT < 24) releasePlayer()
-//        super.onPause()
-//    }
-//
-//    override fun onStop() {
-//        if (Util.SDK_INT < 24) releasePlayer()
-//        super.onStop()
-//    }
-//
-//    private fun releasePlayer() {
-//        if (player != null) {
-//            playWhenReady = player!!.playWhenReady
-//            playbackPosition = player!!.currentPosition
-//            currentWindow = player!!.currentWindowIndex
-//            player!!.release()
-//            player = null
-//        }
-//    }
-}
-
-private fun YouTubePlayerView.addFullScreenListener() {
-    ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+    override fun onBackPressed() {
+        if (youtubePlayerView.isFullScreen)
+            youtubePlayerView.exitFullScreen()
+        else
+            super.onBackPressed()
+    }
 }

@@ -14,7 +14,6 @@ import com.google.android.ads.nativetemplates.TemplateView
 import com.google.android.gms.ads.AdLoader
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.MobileAds
-import com.google.android.gms.ads.nativead.NativeAd
 import com.redemption.adey.Model.ItemsViewModel
 import com.redemption.adey.Model.ViewItemModel
 import com.redemption.adey.R
@@ -24,7 +23,7 @@ class CustomAdapter(private var mList: MutableList<ViewItemModel>, private val o
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): CustomAdapter.DataAdapterViewHolder {
+    ): DataAdapterViewHolder {
         val layout = when (viewType) {
             TYPE_DATA -> R.layout.card_view_design
             TYPE_Ad -> R.layout.native_ad_item
@@ -43,7 +42,7 @@ class CustomAdapter(private var mList: MutableList<ViewItemModel>, private val o
         private const val TYPE_DATA =0
     }
     @SuppressLint("SetTextI18n")
-    override fun onBindViewHolder(holder: CustomAdapter.DataAdapterViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: DataAdapterViewHolder, position: Int) {
 
 
         holder.bind(mList[position],onClickListener,position)
@@ -55,22 +54,22 @@ class CustomAdapter(private var mList: MutableList<ViewItemModel>, private val o
         fun onClick(position: Int) = clickListener(position)
     }
     override fun getItemViewType(position: Int): Int {
-        if(mList[position].isAd){
-            return TYPE_Ad
+        return if(mList[position].isAd){
+            TYPE_Ad
         }else{
-            return TYPE_DATA
+            TYPE_DATA
         }
     }
 
-    fun setData(data: List<ViewItemModel>) {
-        mList.apply {
-            clear()
-            addAll(data)
-        }
-    }
+//    fun setData(data: List<ViewItemModel>) {
+//        mList.apply {
+//            clear()
+//            addAll(data)
+//        }
+//    }
     fun updateList(playlist: ArrayList<ViewItemModel>, oldCount: Int) {
         this.mList.addAll(oldCount,playlist)
-        notifyItemInserted(oldCount );
+        notifyItemInserted(oldCount )
         notifyItemRangeInserted(oldCount, playlist.size)
     }
 
@@ -79,7 +78,7 @@ class CustomAdapter(private var mList: MutableList<ViewItemModel>, private val o
 
 
         private var view: View = v
-        private var itemData: ItemsViewModel? = null
+//        private var itemData: ItemsViewModel? = null
 
         fun bind(mList: ViewItemModel,onClickListener: OnClickListener, position: Int ) {
             if(mList.isAd){
@@ -97,7 +96,7 @@ class CustomAdapter(private var mList: MutableList<ViewItemModel>, private val o
             val title: TextView = itemView.findViewById(R.id.title)
             val itemContainer: ConstraintLayout = itemView.findViewById(R.id.itemContainer)
 //            Picasso.get().load(Decrypt(match.Status)).into(match_status)
-            Picasso.get().load(data.image).into(thumb);
+            Picasso.get().load(data.image).into(thumb)
 
             // sets the text to the textview from our itemHolder class
             title.text = data.title
@@ -113,18 +112,15 @@ class CustomAdapter(private var mList: MutableList<ViewItemModel>, private val o
             val template = view.findViewById<TemplateView>(R.id.my_template)
             MobileAds.initialize(template.context)
             val adLoader: AdLoader = AdLoader.Builder(template.context, template.context.getString(R.string.nativeAdUnit))
-                .forNativeAd(object : NativeAd.OnNativeAdLoadedListener {
-                    override fun onNativeAdLoaded(nativeAd: NativeAd) {
-//                        val mainBg = ColorDrawable(ContextCompat.getColor(template.context, R.color.primaryBlue))
-//                        val tertiaryTextBg = ColorDrawable(ContextCompat.getColor(this@MainActivity, R.color.customBlack))
-                        val styles =
-                            NativeTemplateStyle.Builder()
-                                .build()
-                        template.visibility = View.VISIBLE
-                        template.setStyles(styles)
-                        template.setNativeAd(nativeAd)
-                    }
-                })
+                .forNativeAd { nativeAd -> //                        val mainBg = ColorDrawable(ContextCompat.getColor(template.context, R.color.primaryBlue))
+                    //                        val tertiaryTextBg = ColorDrawable(ContextCompat.getColor(this@MainActivity, R.color.customBlack))
+                    val styles =
+                        NativeTemplateStyle.Builder()
+                            .build()
+                    template.visibility = View.VISIBLE
+                    template.setStyles(styles)
+                    template.setNativeAd(nativeAd)
+                }
                 .build()
 
             adLoader.loadAd(AdRequest.Builder().build())
