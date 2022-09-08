@@ -4,7 +4,7 @@
     <string name="duration">45:24</string>
     <string name="videoDescription">This is the description for the video</string>
     <string name="API_KEY">AIzaSyDE2wMvuGg7-18C5vnDoEJEPtLgaNLuwhU</string>
-    <string name="nativeAdUnit">ca-app-pub-3940256099942544/2247696110</string>
-    <string name="bannerAdUnit">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="nativeAdUnit">ca-app-pub-6018993100135230/2121407201</string>
+    <string name="bannerAdUnit">ca-app-pub-6018993100135230/8863080960</string>
 
 </resources>
