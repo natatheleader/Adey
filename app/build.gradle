@@ -8,7 +8,7 @@ android {
     compileSdk 32
 
     defaultConfig {
-        applicationId "com.redemption.adey"
+        applicationId "com.redemption.derama"
         minSdk 21
         targetSdk 32
         versionCode 1
