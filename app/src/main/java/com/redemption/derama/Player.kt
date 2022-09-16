@@ -22,7 +22,7 @@ import kotlinx.android.synthetic.main.activity_player.*
 class Player : AppCompatActivity() {
 
     private lateinit var youtubePlayerView: YouTubePlayerView
-    lateinit var mAdView : AdView
+//    lateinit var mAdView : AdView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,7 +32,7 @@ class Player : AppCompatActivity() {
         val title: String = intent.getStringExtra("title").toString()
         val description: String = intent.getStringExtra("description").toString()
 
-        mAdView = findViewById(R.id.adView)
+//        mAdView = findViewById(R.id.adView)
 
         youtubePlayerView = findViewById(R.id.youtube_player_view)
         lifecycle.addObserver(youtubePlayerView)
@@ -60,10 +60,10 @@ class Player : AppCompatActivity() {
             }
         })
 
-        MobileAds.initialize(this) {}
-
-        val adRequest = AdRequest.Builder().build()
-        mAdView.loadAd(adRequest)
+//        MobileAds.initialize(this) {}
+//
+//        val adRequest = AdRequest.Builder().build()
+//        mAdView.loadAd(adRequest)
 
     }
 
@@ -71,7 +71,7 @@ class Player : AppCompatActivity() {
         super.onConfigurationChanged(_newConfig)
         if (_newConfig.orientation === Configuration.ORIENTATION_LANDSCAPE) {
             youtubePlayerView.enterFullScreen()
-            mAdView.visibility = View.GONE
+//            mAdView.visibility = View.GONE
 
             val windowInsetsController =
                 ViewCompat.getWindowInsetsController(window.decorView) ?: return
@@ -84,7 +84,7 @@ class Player : AppCompatActivity() {
             supportActionBar?.hide()
         } else {
             youtubePlayerView.exitFullScreen()
-            mAdView.visibility = View.VISIBLE
+//            mAdView.visibility = View.VISIBLE
 
             val windowInsetsController =
                 ViewCompat.getWindowInsetsController(window.decorView) ?: return
