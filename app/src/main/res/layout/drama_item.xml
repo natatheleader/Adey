@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="8dp"
+    android:layout_margin="5dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/dramaImage"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:src="@drawable/ic_launcher_background"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_percent=".3"
+            tools:ignore="ImageContrastCheck"
+            android:contentDescription="@string/drama_thumbnail" />
+
+        <TextView
+            android:id="@+id/dramaTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toEndOf="@+id/dramaImage"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:textSize="25sp"
+            android:fontFamily="sans-serif"
+            android:textColor="#212121"
+            android:layout_marginStart="10dp"
+            android:text="@string/this_is_a_very_long_title_and_here_it_is" />
+        <TextView
+            android:id="@+id/dramaDescription"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="@+id/dramaTitle"
+            app:layout_constraintEnd_toEndOf="@id/dramaTitle"
+            app:layout_constraintTop_toBottomOf="@+id/dramaTitle"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:textSize="18sp"
+            android:fontFamily="sans-serif"
+            android:text="@string/this_is_a_very_long_title_and_here_it_is"
+            />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>

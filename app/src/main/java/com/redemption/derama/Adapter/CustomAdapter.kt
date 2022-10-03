@@ -17,7 +17,6 @@ import com.google.android.gms.ads.MobileAds
 import com.redemption.derama.Model.ItemsViewModel
 import com.redemption.derama.Model.ViewItemModel
 import com.redemption.derama.R
-import com.squareup.picasso.Picasso
 
 class CustomAdapter(private var mList: MutableList<ViewItemModel>, private val onClickListener: OnClickListener) : RecyclerView.Adapter<CustomAdapter.DataAdapterViewHolder>()  {
     override fun onCreateViewHolder(
@@ -96,7 +95,7 @@ class CustomAdapter(private var mList: MutableList<ViewItemModel>, private val o
             val title: TextView = itemView.findViewById(R.id.title)
             val itemContainer: ConstraintLayout = itemView.findViewById(R.id.itemContainer)
 //            Picasso.get().load(Decrypt(match.Status)).into(match_status)
-            Picasso.get().load(data.image).into(thumb)
+//            Picasso.get().load(data.image).into(thumb)
 
             // sets the text to the textview from our itemHolder class
             title.text = data.title
