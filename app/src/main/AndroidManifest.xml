@@ -12,6 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Adey">
         <activity
+            android:name=".Season"
+            android:exported="false" />
+        <activity
             android:name=".Episode"
             android:exported="false" />
         <activity

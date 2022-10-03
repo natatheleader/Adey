@@ -6,22 +6,19 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
-import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.redemption.derama.Model.Drama
+import com.redemption.derama.Model.Season
 import com.redemption.derama.R
 
-class DramaAdapter (private val data: List<Drama>) : RecyclerView.Adapter<DramaAdapter.MyViewHolder>()  {
+class SeasonAdapter (private val data: List<Season>) : RecyclerView.Adapter<SeasonAdapter.MyViewHolder>()  {
 
     class MyViewHolder(val view: View): RecyclerView.ViewHolder(view){
 
-        fun bind(property: Drama){
-            val drama = view.findViewById<CardView>(R.id.drama)
-            val title = view.findViewById<TextView>(R.id.dramaTitle)
-            val imageView = view.findViewById<ImageView>(R.id.dramaImage)
-            val description = view.findViewById<TextView>(R.id.dramaDescription)
+        fun bind(property: Season){
+            val title = view.findViewById<TextView>(R.id.seasonTitle)
+            val imageView = view.findViewById<ImageView>(R.id.seasonImage)
+            val description = view.findViewById<TextView>(R.id.seasonDescription)
 
             Log.d("data", property.toString())
 
@@ -29,13 +26,11 @@ class DramaAdapter (private val data: List<Drama>) : RecyclerView.Adapter<DramaA
             description.text = property.description
 
 //            Glide.with(view.context).load(property.image).centerCrop().into(imageView)
-
-//            drama.setOnClickListener()
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
-        val v = LayoutInflater.from(parent.context).inflate(R.layout.drama_item, parent, false)
+        val v = LayoutInflater.from(parent.context).inflate(R.layout.season_item, parent, false)
         return MyViewHolder(v)
     }
 
