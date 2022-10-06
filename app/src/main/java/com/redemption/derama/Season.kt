@@ -52,7 +52,7 @@ class Season : AppCompatActivity() {
                     recyclerView = findViewById<RecyclerView>(R.id.seasonRecycler).apply{
                         myAdapter = SeasonAdapter(data, SeasonAdapter.OnClickListener {
                             position->val intent = Intent(this@Season, Episode::class.java)
-                            intent.putExtra("SeasonId", data[position].season?.id)
+                            intent.putExtra("SeasonId", data[position].season?.id.toString())
                             startActivity(intent)
                         })
                         layoutManager = manager
