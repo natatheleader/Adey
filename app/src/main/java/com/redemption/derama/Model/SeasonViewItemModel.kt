@@ -1,6 +1,6 @@
 package com.redemption.derama.Model
 
-data class ViewItemModel(
-    val drama: Drama?,
+class SeasonViewItemModel (
+    val season: Season?,
     val isAd: Boolean
 )

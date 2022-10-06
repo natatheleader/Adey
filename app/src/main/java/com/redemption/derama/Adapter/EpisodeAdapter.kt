@@ -5,26 +5,28 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.google.android.ads.nativetemplates.NativeTemplateStyle
 import com.google.android.ads.nativetemplates.TemplateView
 import com.google.android.gms.ads.AdLoader
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.MobileAds
-import com.redemption.derama.Model.Season
-import com.redemption.derama.Model.SeasonViewItemModel
+import com.redemption.derama.Model.Episode
+import com.redemption.derama.Model.EpisodeViewItemModel
 import com.redemption.derama.R
 
-class SeasonAdapter (private val data: MutableList<SeasonViewItemModel>, private val onClickListener: OnClickListener) : RecyclerView.Adapter<SeasonAdapter.MyViewHolder>()  {
+class EpisodeAdapter (private val data: MutableList<EpisodeViewItemModel>, private val onClickListener: OnClickListener) : RecyclerView.Adapter<EpisodeAdapter.MyViewHolder>()  {
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
     ): MyViewHolder {
         val layout = when (viewType) {
-            TYPE_DATA -> R.layout.season_item
+            TYPE_DATA -> R.layout.episode_item
             TYPE_Ad -> R.layout.native_ad_item
             else -> throw IllegalArgumentException("Invalid view type")
         }
@@ -59,7 +61,7 @@ class SeasonAdapter (private val data: MutableList<SeasonViewItemModel>, private
         }
     }
 
-    fun updateList(playlist: ArrayList<SeasonViewItemModel>, oldCount: Int) {
+    fun updateList(playlist: ArrayList<EpisodeViewItemModel>, oldCount: Int) {
         this.data.addAll(oldCount,playlist)
         notifyItemInserted(oldCount )
         notifyItemRangeInserted(oldCount, playlist.size)
@@ -69,21 +71,25 @@ class SeasonAdapter (private val data: MutableList<SeasonViewItemModel>, private
         //2
         private var view: View = v
 
-        fun bind(data: SeasonViewItemModel, onClickListener: OnClickListener, position: Int ) {
+        fun bind(data: EpisodeViewItemModel, onClickListener: OnClickListener, position: Int ) {
             if(data.isAd){
                 bindAd()
             }else{
-                bindTip(data.season!!, onClickListener,position)
+                bindTip(data.episode!!, onClickListener,position)
             }
         }
 
         @SuppressLint("SetTextI18n")
-        private fun bindTip(data: Season, onClickListener: OnClickListener, position: Int) {
+        private fun bindTip(data: Episode, onClickListener: OnClickListener, position: Int) {
 
-            val title: TextView = itemView.findViewById(R.id.seasonTitle)
-            val itemContainer: ConstraintLayout = itemView.findViewById(R.id.season)
+            val thumb: ImageView = itemView.findViewById(R.id.dramaImage)
+            val title: TextView = itemView.findViewById(R.id.dramaTitle)
+            val desc: TextView = itemView.findViewById(R.id.dramaDescription)
+            val itemContainer: ConstraintLayout = itemView.findViewById(R.id.drama)
 
-            title.text = "Season - " + data.number.toString() + " / ክፍል - " + data.number.toString()
+            Glide.with(view.context).load("https://drama.allmovielovers.com/" + data.thumb).centerCrop().into(thumb)
+            title.text = data.episode.toString() + " - " + data.title
+            desc.text = data.description
 
             itemContainer.setOnClickListener{
                 onClickListener.onClick(position)

@@ -11,10 +11,10 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/drama" >
+        android:id="@+id/episode" >
 
         <ImageView
-            android:id="@+id/dramaImage"
+            android:id="@+id/episodeImage"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginStart="8dp"
@@ -30,7 +30,7 @@
             tools:ignore="ImageContrastCheck" />
 
         <TextView
-            android:id="@+id/dramaTitle"
+            android:id="@+id/episodeTitle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
@@ -40,11 +40,11 @@
             android:textColor="#212121"
             android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/dramaImage"
+            app:layout_constraintStart_toEndOf="@+id/episodeImage"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/dramaDescription"
+            android:id="@+id/episodeDescription"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
@@ -52,8 +52,8 @@
             android:text="@string/this_is_a_very_long_title_and_here_it_is"
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@id/dramaTitle"
-            app:layout_constraintStart_toStartOf="@+id/dramaTitle"
-            app:layout_constraintTop_toBottomOf="@+id/dramaTitle" />
+            app:layout_constraintEnd_toEndOf="@id/episodeTitle"
+            app:layout_constraintStart_toStartOf="@+id/episodeTitle"
+            app:layout_constraintTop_toBottomOf="@+id/episodeTitle" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

@@ -1,50 +1,128 @@
 package com.redemption.derama.Adapter
 
+import android.annotation.SuppressLint
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
-import androidx.cardview.widget.CardView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.google.android.ads.nativetemplates.NativeTemplateStyle
+import com.google.android.ads.nativetemplates.TemplateView
+import com.google.android.gms.ads.AdLoader
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.MobileAds
 import com.redemption.derama.Model.Drama
+import com.redemption.derama.Model.ViewItemModel
 import com.redemption.derama.R
 
-class DramaAdapter (private val data: List<Drama>) : RecyclerView.Adapter<DramaAdapter.MyViewHolder>()  {
+class DramaAdapter (private val data: MutableList<ViewItemModel>, private val onClickListener: OnClickListener) : RecyclerView.Adapter<DramaAdapter.MyViewHolder>()  {
 
-    class MyViewHolder(val view: View): RecyclerView.ViewHolder(view){
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int
+    ): MyViewHolder {
+        val layout = when (viewType) {
+            TYPE_DATA -> R.layout.drama_item
+            TYPE_Ad -> R.layout.native_ad_item
+            else -> throw IllegalArgumentException("Invalid view type")
+        }
+        val view = LayoutInflater
+            .from(parent.context)
+            .inflate(layout, parent, false)
 
-        fun bind(property: Drama){
-            val drama = view.findViewById<CardView>(R.id.drama)
-            val title = view.findViewById<TextView>(R.id.dramaTitle)
-            val imageView = view.findViewById<ImageView>(R.id.dramaImage)
-            val description = view.findViewById<TextView>(R.id.dramaDescription)
+        return MyViewHolder(view)
+    }
 
-            Log.d("data", property.toString())
+    companion object {
+        private const val TYPE_Ad = 1
+        private const val TYPE_DATA =0
+    }
 
-            title.text = property.title
-            description.text = property.description
+    @SuppressLint("SetTextI18n")
+    override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
+        holder.bind(data[position], onClickListener,position)
+    }
 
-//            Glide.with(view.context).load(property.image).centerCrop().into(imageView)
+    override fun getItemCount() = data.size
 
-//            drama.setOnClickListener()
+    class OnClickListener(val clickListener: (category: Int) -> Unit) {
+        fun onClick(position: Int) = clickListener(position)
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        return if(data[position].isAd){
+            TYPE_Ad
+        }else{
+            TYPE_DATA
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
-        val v = LayoutInflater.from(parent.context).inflate(R.layout.drama_item, parent, false)
-        return MyViewHolder(v)
+    fun updateList(playlist: ArrayList<ViewItemModel>, oldCount: Int) {
+        this.data.addAll(oldCount,playlist)
+        notifyItemInserted(oldCount )
+        notifyItemRangeInserted(oldCount, playlist.size)
     }
 
-    override fun getItemCount(): Int {
-        return data.size
-    }
+    class MyViewHolder(v: View) : RecyclerView.ViewHolder(v), View.OnClickListener {
+        //2
+        private var view: View = v
 
-    override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        holder.bind(data[position])
-    }
+        fun bind(data: ViewItemModel, onClickListener: OnClickListener, position: Int ) {
+            if(data.isAd){
+                bindAd()
+            }else{
+                bindTip(data.drama!!, onClickListener,position)
+            }
+        }
 
+        private fun bindTip(data: Drama, onClickListener: OnClickListener, position: Int) {
+
+            val thumb: ImageView = itemView.findViewById(R.id.dramaImage)
+            val title: TextView = itemView.findViewById(R.id.dramaTitle)
+            val desc: TextView = itemView.findViewById(R.id.dramaDescription)
+            val itemContainer: ConstraintLayout = itemView.findViewById(R.id.drama)
+
+            Glide.with(view.context).load("https://drama.allmovielovers.com/" + data.thumb).centerCrop().into(thumb)
+            title.text = data.title
+            desc.text = data.description
+
+            itemContainer.setOnClickListener{
+                onClickListener.onClick(position)
+            }
+        }
+
+        private fun bindAd() {
+            val template = view.findViewById<TemplateView>(R.id.my_template)
+            MobileAds.initialize(template.context)
+            val adLoader: AdLoader = AdLoader.Builder(template.context, template.context.getString(R.string.nativeAdUnit))
+                .forNativeAd { nativeAd -> //                        val mainBg = ColorDrawable(ContextCompat.getColor(template.context, R.color.primaryBlue))
+                    //                        val tertiaryTextBg = ColorDrawable(ContextCompat.getColor(this@MainActivity, R.color.customBlack))
+                    val styles =
+                        NativeTemplateStyle.Builder()
+                            .build()
+                    template.visibility = View.VISIBLE
+                    template.setStyles(styles)
+                    template.setNativeAd(nativeAd)
+                }
+                .build()
+
+            adLoader.loadAd(AdRequest.Builder().build())
+        }
+
+        init {
+            v.setOnClickListener(this)
+        }
+
+        override fun onClick(v: View) {
+            Log.d("RecyclerView", "CLICK!")
+        }
+
+        companion object {
+
+        }
+    }
 }

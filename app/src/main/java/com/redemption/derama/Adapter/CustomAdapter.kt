@@ -66,6 +66,7 @@ class CustomAdapter(private var mList: MutableList<ViewItemModel>, private val o
 //            addAll(data)
 //        }
 //    }
+
     fun updateList(playlist: ArrayList<ViewItemModel>, oldCount: Int) {
         this.mList.addAll(oldCount,playlist)
         notifyItemInserted(oldCount )
@@ -83,7 +84,7 @@ class CustomAdapter(private var mList: MutableList<ViewItemModel>, private val o
             if(mList.isAd){
                 bindAd()
             }else{
-                bindTip(mList.data!!, onClickListener,position)
+//                bindTip(mList.data!!, onClickListener,position)
             }
         }
 
