@@ -16,15 +16,12 @@ import kotlinx.android.synthetic.main.activity_player.*
 class Player : AppCompatActivity() {
 
     private lateinit var youtubePlayerView: YouTubePlayerView
-//    lateinit var mAdView : AdView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_player)
 
         val videoId: String = intent.getStringExtra("link").toString()
-
-//        mAdView = findViewById(R.id.adView)
 
         youtubePlayerView = findViewById(R.id.youtube_player_view)
         lifecycle.addObserver(youtubePlayerView)
@@ -48,12 +45,6 @@ class Player : AppCompatActivity() {
                 youtubePlayerView.enterFullScreen()
             }
         })
-
-//        MobileAds.initialize(this) {}
-//
-//        val adRequest = AdRequest.Builder().build()
-//        mAdView.loadAd(adRequest)
-
     }
 
     override fun onConfigurationChanged(_newConfig: Configuration) {

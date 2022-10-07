@@ -3,13 +3,10 @@ package com.redemption.derama
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.gms.ads.*
-import com.google.android.gms.ads.initialization.InitializationStatus
-import com.google.android.gms.ads.initialization.OnInitializationCompleteListener
 import com.google.android.gms.ads.rewarded.RewardItem
 import com.google.android.gms.ads.rewarded.RewardedAd
 import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback
@@ -68,17 +65,11 @@ class MainActivity : AppCompatActivity() {
                                 AdLoad(data[position].drama?.id.toString())
 
                                 if (mRewardedAd != null) {
-                                    Toast.makeText(this@MainActivity, "this" + mRewardedAd.toString(), Toast.LENGTH_LONG).show()
                                     mRewardedAd?.show(this@MainActivity, OnUserEarnedRewardListener() {
                                             fun onUserEarnedReward(rewardItem: RewardItem) {
-//                                                Toast.makeText(this@MainActivity, "rewarded", Toast.LENGTH_LONG).show()
-//                                                intent = Intent(this@MainActivity, Season::class.java)
-//                                                intent.putExtra("DramaId", data[position].drama?.id.toString())
-//                                                startActivity(intent)
                                             }
                                         })
                                 } else {
-                                    Toast.makeText(this@MainActivity, "not", Toast.LENGTH_LONG).show()
                                     intent = Intent(this@MainActivity, Season::class.java)
                                     intent.putExtra("DramaId", data[position].drama?.id.toString())
                                     startActivity(intent)
@@ -107,7 +98,6 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onAdLoaded(rewardedAd: RewardedAd) {
-                Toast.makeText(this@MainActivity, "Ad successfully Loaded", Toast.LENGTH_LONG).show()
                 mRewardedAd = rewardedAd
 
                 mRewardedAd?.fullScreenContentCallback = object: FullScreenContentCallback() {
@@ -122,7 +112,6 @@ class MainActivity : AppCompatActivity() {
                         intent = Intent(this@MainActivity, Season::class.java)
                         intent.putExtra("DramaId", id)
                         startActivity(intent)
-//                        Log.d(TAG, "Ad dismissed fullscreen content.")
                         mRewardedAd = null
                     }
 
@@ -131,7 +120,6 @@ class MainActivity : AppCompatActivity() {
                         intent = Intent(this@MainActivity, Season::class.java)
                         intent.putExtra("DramaId", id)
                         startActivity(intent)
-//                        Log.e(TAG, "Ad failed to show fullscreen content.")
                         mRewardedAd = null
                     }
 
