@@ -3,16 +3,16 @@ package com.redemption.derama
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.redemption.derama.Adapter.EpisodeAdapter
 import com.redemption.derama.Interface.Api
+import com.redemption.derama.Model.Episode
 import com.redemption.derama.Model.EpisodeViewItemModel
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import com.redemption.derama.Model.Episode
+
 
 class Episode : AppCompatActivity() {
 
@@ -25,18 +25,6 @@ class Episode : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_episode)
-//        var adRequest = AdRequest.Builder().build()
-//        RewardedAd.load(this,"ca-app-pub-3940256099942544/5224354917", adRequest, object : RewardedAdLoadCallback() {
-//            override fun onAdFailedToLoad(adError: LoadAdError) {
-//                adError?.toString()?.let { Log.d(TAG, it) }
-//                mRewardedAd = null
-//            }
-//
-//            override fun onAdLoaded(rewardedAd: RewardedAd) {
-//                Log.d(TAG, "Ad was loaded.")
-//                mRewardedAd = rewardedAd
-//            }
-//        })
 
         manager = LinearLayoutManager(this)
 
@@ -45,7 +33,7 @@ class Episode : AppCompatActivity() {
         getAllEpisodeData(seasonId)
     }
 
-    fun getAllEpisodeData(id: String){
+    private fun getAllEpisodeData(id: String) {
         Api.retrofitService.getAllDataEpisode(id).enqueue(object: Callback<List<Episode>> {
             override fun onResponse(
                 call: Call<List<Episode>>,

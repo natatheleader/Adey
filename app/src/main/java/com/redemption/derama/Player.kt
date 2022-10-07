@@ -22,9 +22,7 @@ class Player : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_player)
 
-        val videoId: String = intent.getStringExtra("videoId").toString()
-        val title: String = intent.getStringExtra("title").toString()
-        val description: String = intent.getStringExtra("description").toString()
+        val videoId: String = intent.getStringExtra("link").toString()
 
 //        mAdView = findViewById(R.id.adView)
 
@@ -35,12 +33,10 @@ class Player : AppCompatActivity() {
             initializedYouTubePlayer.addListener(object : AbstractYouTubePlayerListener() {
                 override fun onReady() {
                     initializedYouTubePlayer.loadVideo(videoId, 0F)
+                    youtubePlayerView.enterFullScreen()
                 }
             })
         }, true)
-
-        videoTitle.text = title
-        videoDescription.text = description
 
         youtubePlayerView.addFullScreenListener(object : YouTubePlayerFullScreenListener {
             override fun onYouTubePlayerEnterFullScreen() {
@@ -49,8 +45,7 @@ class Player : AppCompatActivity() {
             }
 
             override fun onYouTubePlayerExitFullScreen() {
-                requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
-                youtubePlayerView.exitFullScreen()
+                youtubePlayerView.enterFullScreen()
             }
         })
 
@@ -77,7 +72,7 @@ class Player : AppCompatActivity() {
 
             supportActionBar?.hide()
         } else {
-            youtubePlayerView.exitFullScreen()
+            youtubePlayerView.enterFullScreen()
 //            mAdView.visibility = View.VISIBLE
 
             val windowInsetsController =
@@ -86,16 +81,9 @@ class Player : AppCompatActivity() {
             windowInsetsController.systemBarsBehavior =
                 WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
             // Hide both the status bar and the navigation bar
-            windowInsetsController.show(WindowInsetsCompat.Type.systemBars())
+            windowInsetsController.hide(WindowInsetsCompat.Type.systemBars())
 
-            supportActionBar?.show()
+            supportActionBar?.hide()
         }
-    }
-
-    override fun onBackPressed() {
-        if (youtubePlayerView.isFullScreen)
-            youtubePlayerView.exitFullScreen()
-        else
-            super.onBackPressed()
     }
 }

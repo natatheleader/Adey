@@ -1,11 +1,11 @@
 <resources>
-    <string name="app_name">Adey / አደይ ድራማ</string>
+    <string name="app_name">ድራማ / Ethiopian Amharic Drama</string>
     <string name="title">Video Name</string>
     <string name="duration">45:24</string>
     <string name="videoDescription">This is the description for the video</string>
     <string name="API_KEY">AIzaSyDE2wMvuGg7-18C5vnDoEJEPtLgaNLuwhU</string>
-    <string name="nativeAdUnit">ca-app-pub-6018993100135230/2121407201</string>
-    <string name="bannerAdUnit">ca-app-pub-6018993100135230/8863080960</string>
+    <string name="nativeAdUnit">ca-app-pub-3940256099942544/2247696110</string>
+    <string name="rewardedAdUnit">ca-app-pub-3940256099942544/5224354917</string>
     <string name="this_is_a_very_long_title_and_here_it_is">This is a very long title and here it is</string>
     <string name="drama_thumbnail">Drama Thumbnail</string>
 

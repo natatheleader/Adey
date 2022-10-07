@@ -82,10 +82,10 @@ class EpisodeAdapter (private val data: MutableList<EpisodeViewItemModel>, priva
         @SuppressLint("SetTextI18n")
         private fun bindTip(data: Episode, onClickListener: OnClickListener, position: Int) {
 
-            val thumb: ImageView = itemView.findViewById(R.id.dramaImage)
-            val title: TextView = itemView.findViewById(R.id.dramaTitle)
-            val desc: TextView = itemView.findViewById(R.id.dramaDescription)
-            val itemContainer: ConstraintLayout = itemView.findViewById(R.id.drama)
+            val thumb: ImageView = itemView.findViewById(R.id.episodeImage)
+            val title: TextView = itemView.findViewById(R.id.episodeTitle)
+            val desc: TextView = itemView.findViewById(R.id.episodeDescription)
+            val itemContainer: ConstraintLayout = itemView.findViewById(R.id.episode)
 
             Glide.with(view.context).load("https://drama.allmovielovers.com/" + data.thumb).centerCrop().into(thumb)
             title.text = data.episode.toString() + " - " + data.title

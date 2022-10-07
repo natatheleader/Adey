@@ -42,7 +42,7 @@ class Season : AppCompatActivity() {
                     val data = ArrayList<SeasonViewItemModel>()
 
                     for(item in response.body()!!){
-                        if(offSet != 0 && offSet % 2 == 0) {
+                        if(offSet != 0 && offSet % 3 == 0) {
                             data.add(SeasonViewItemModel(null,true))
                         }
                         offSet += 1
