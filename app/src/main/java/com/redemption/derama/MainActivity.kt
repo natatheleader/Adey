@@ -1,5 +1,6 @@
 package com.redemption.derama
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -62,7 +63,7 @@ class MainActivity : AppCompatActivity() {
                             position->
                             run {
 
-                                AdLoad(data[position].drama?.id.toString())
+                                AdLoad(data[position].drama?.id.toString(), )
 
                                 if (mRewardedAd != null) {
                                     mRewardedAd?.show(this@MainActivity, OnUserEarnedRewardListener() {
@@ -90,7 +91,7 @@ class MainActivity : AppCompatActivity() {
 
     fun AdLoad(id: String) {
         var adRequest = AdRequest.Builder().build()
-        RewardedAd.load(this, "ca-app-pub-3940256099942544/5224354917", adRequest, object : RewardedAdLoadCallback() {
+        RewardedAd.load(this, this@MainActivity.getString(R.string.rewardedAdUnit), adRequest, object : RewardedAdLoadCallback() {
 
             override fun onAdFailedToLoad(adError: LoadAdError) {
                 adError?.toString()?.let { Log.d(TAG, it) }
