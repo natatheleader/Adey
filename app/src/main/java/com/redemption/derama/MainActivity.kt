@@ -8,6 +8,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.gms.ads.*
+import com.google.android.gms.ads.interstitial.InterstitialAd
+import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
 import com.google.android.gms.ads.rewarded.RewardItem
 import com.google.android.gms.ads.rewarded.RewardedAd
 import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback
@@ -21,7 +23,7 @@ import retrofit2.Response
 
 class MainActivity : AppCompatActivity() {
 
-    private var mRewardedAd: RewardedAd? = null
+    private var mInterstitialAd: InterstitialAd? = null
     private final var TAG = "MainActivity"
 
     private lateinit var recyclerView: RecyclerView
@@ -65,11 +67,8 @@ class MainActivity : AppCompatActivity() {
 
                                 AdLoad(data[position].drama?.id.toString(), )
 
-                                if (mRewardedAd != null) {
-                                    mRewardedAd?.show(this@MainActivity, OnUserEarnedRewardListener() {
-                                            fun onUserEarnedReward(rewardItem: RewardItem) {
-                                            }
-                                        })
+                                if (mInterstitialAd != null) {
+                                    mInterstitialAd?.show(this@MainActivity)
                                 } else {
                                     intent = Intent(this@MainActivity, Season::class.java)
                                     intent.putExtra("DramaId", data[position].drama?.id.toString())
@@ -91,17 +90,17 @@ class MainActivity : AppCompatActivity() {
 
     fun AdLoad(id: String) {
         var adRequest = AdRequest.Builder().build()
-        RewardedAd.load(this, this@MainActivity.getString(R.string.rewardedAdUnit), adRequest, object : RewardedAdLoadCallback() {
+        InterstitialAd.load(this, this@MainActivity.getString(R.string.interstitialAdUnit), adRequest, object : InterstitialAdLoadCallback() {
 
             override fun onAdFailedToLoad(adError: LoadAdError) {
                 adError?.toString()?.let { Log.d(TAG, it) }
-                mRewardedAd = null
+                mInterstitialAd = null
             }
 
-            override fun onAdLoaded(rewardedAd: RewardedAd) {
-                mRewardedAd = rewardedAd
+            override fun onAdLoaded(interstitialAd: InterstitialAd) {
+                mInterstitialAd = interstitialAd
 
-                mRewardedAd?.fullScreenContentCallback = object: FullScreenContentCallback() {
+                mInterstitialAd?.fullScreenContentCallback = object: FullScreenContentCallback() {
                     override fun onAdClicked() {
                         // Called when a click is recorded for an ad.
                         Log.d(TAG, "Ad was clicked.")
@@ -113,7 +112,7 @@ class MainActivity : AppCompatActivity() {
                         intent = Intent(this@MainActivity, Season::class.java)
                         intent.putExtra("DramaId", id)
                         startActivity(intent)
-                        mRewardedAd = null
+                        mInterstitialAd = null
                     }
 
                     override fun onAdFailedToShowFullScreenContent(p0: AdError) {
@@ -121,7 +120,7 @@ class MainActivity : AppCompatActivity() {
                         intent = Intent(this@MainActivity, Season::class.java)
                         intent.putExtra("DramaId", id)
                         startActivity(intent)
-                        mRewardedAd = null
+                        mInterstitialAd = null
                     }
 
                     override fun onAdImpression() {

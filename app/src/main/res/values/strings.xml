@@ -5,6 +5,7 @@
     <string name="videoDescription">This is the description for the video</string>
     <string name="nativeAdUnit">ca-app-pub-3940256099942544/2247696110</string>
     <string name="rewardedAdUnit">ca-app-pub-3940256099942544/5224354917</string>
+    <string name="interstitialAdUnit">ca-app-pub-3940256099942544/1033173712</string>
     <string name="this_is_a_very_long_title_and_here_it_is">This is a very long title and here it is</string>
     <string name="drama_thumbnail">Drama Thumbnail</string>
 

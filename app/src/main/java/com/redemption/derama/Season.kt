@@ -7,6 +7,8 @@ import android.util.Log
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.gms.ads.*
+import com.google.android.gms.ads.interstitial.InterstitialAd
+import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
 import com.google.android.gms.ads.rewarded.RewardItem
 import com.google.android.gms.ads.rewarded.RewardedAd
 import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback
@@ -20,7 +22,8 @@ import retrofit2.Response
 
 class Season : AppCompatActivity() {
 
-    private var mRewardedAd: RewardedAd? = null
+    private var mInterstitialAd: InterstitialAd? = null
+//    private var mRewardedAd: RewardedAd? = null
     private final var TAG = "Season"
 
     private lateinit var recyclerView: RecyclerView
@@ -66,16 +69,23 @@ class Season : AppCompatActivity() {
 
                                 AdLoad(data[position].season?.id.toString())
 
-                                if (mRewardedAd != null) {
-                                    mRewardedAd?.show(this@Season, OnUserEarnedRewardListener() {
-                                        fun onUserEarnedReward(rewardItem: RewardItem) {
-                                        }
-                                    })
+                                if (mInterstitialAd != null) {
+                                    mInterstitialAd?.show(this@Season)
                                 } else {
                                     intent = Intent(this@Season, Episode::class.java)
                                     intent.putExtra("SeasonId", data[position].season?.id.toString())
                                     startActivity(intent)
                                 }
+//                                if (mRewardedAd != null) {
+//                                    mRewardedAd?.show(this@Season, OnUserEarnedRewardListener() {
+//                                        fun onUserEarnedReward(rewardItem: RewardItem) {
+//                                        }
+//                                    })
+//                                } else {
+//                                    intent = Intent(this@Season, Episode::class.java)
+//                                    intent.putExtra("SeasonId", data[position].season?.id.toString())
+//                                    startActivity(intent)
+//                                }
                             }
                         })
                         layoutManager = manager
@@ -92,17 +102,20 @@ class Season : AppCompatActivity() {
 
     fun AdLoad(id: String) {
         var adRequest = AdRequest.Builder().build()
-        RewardedAd.load(this, this@Season.getString(R.string.rewardedAdUnit), adRequest, object : RewardedAdLoadCallback() {
+//        RewardedAd.load(this, this@Season.getString(R.string.rewardedAdUnit), adRequest, object : RewardedAdLoadCallback() {
+        InterstitialAd.load(this, this@Season.getString(R.string.interstitialAdUnit), adRequest, object : InterstitialAdLoadCallback() {
 
             override fun onAdFailedToLoad(adError: LoadAdError) {
                 adError?.toString()?.let { Log.d(TAG, it) }
-                mRewardedAd = null
+                mInterstitialAd = null;
+//                mRewardedAd = null
             }
 
-            override fun onAdLoaded(rewardedAd: RewardedAd) {
-                mRewardedAd = rewardedAd
+//            override fun onAdLoaded(rewardedAd: RewardedAd) {
+            override fun onAdLoaded(interstitialAd: InterstitialAd) {
+                mInterstitialAd = interstitialAd
 
-                mRewardedAd?.fullScreenContentCallback = object: FullScreenContentCallback() {
+                mInterstitialAd?.fullScreenContentCallback = object: FullScreenContentCallback() {
                     override fun onAdClicked() {
                         // Called when a click is recorded for an ad.
                         Log.d(TAG, "Ad was clicked.")
@@ -114,7 +127,7 @@ class Season : AppCompatActivity() {
                         intent = Intent(this@Season, Episode::class.java)
                         intent.putExtra("SeasonId", id)
                         startActivity(intent)
-                        mRewardedAd = null
+                        mInterstitialAd = null
                     }
 
                     override fun onAdFailedToShowFullScreenContent(p0: AdError) {
@@ -122,7 +135,7 @@ class Season : AppCompatActivity() {
                         intent = Intent(this@Season, Episode::class.java)
                         intent.putExtra("SeasonId", id)
                         startActivity(intent)
-                        mRewardedAd = null
+                        mInterstitialAd = null
                     }
 
                     override fun onAdImpression() {
@@ -135,6 +148,41 @@ class Season : AppCompatActivity() {
                         Log.d(TAG, "Ad showed fullscreen content.")
                     }
                 }
+//                mRewardedAd = rewardedAd
+//
+//                mRewardedAd?.fullScreenContentCallback = object: FullScreenContentCallback() {
+//                    override fun onAdClicked() {
+//                        // Called when a click is recorded for an ad.
+//                        Log.d(TAG, "Ad was clicked.")
+//                    }
+//
+//                    override fun onAdDismissedFullScreenContent() {
+//                        // Called when ad is dismissed.
+//                        // Set the ad reference to null so you don't show the ad a second time.
+//                        intent = Intent(this@Season, Episode::class.java)
+//                        intent.putExtra("SeasonId", id)
+//                        startActivity(intent)
+//                        mRewardedAd = null
+//                    }
+//
+//                    override fun onAdFailedToShowFullScreenContent(p0: AdError) {
+//                        // Called when ad fails to show.
+//                        intent = Intent(this@Season, Episode::class.java)
+//                        intent.putExtra("SeasonId", id)
+//                        startActivity(intent)
+//                        mRewardedAd = null
+//                    }
+//
+//                    override fun onAdImpression() {
+//                        // Called when an impression is recorded for an ad.
+//                        Log.d(TAG, "Ad recorded an impression.")
+//                    }
+//
+//                    override fun onAdShowedFullScreenContent() {
+//                        // Called when ad is shown.
+//                        Log.d(TAG, "Ad showed fullscreen content.")
+//                    }
+//                }
             }
         })
     }
